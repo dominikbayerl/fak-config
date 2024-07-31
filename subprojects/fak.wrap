@@ -1,4 +1,4 @@
 [wrap-git]
-url = https://github.com/semickolon/fak.git
-revision = e11254178a352b144717f327bb85a3f00c2b6567
+url = https://github.com/dominikbayerl/fak.git
+revision = feat/led
 depth = 1
