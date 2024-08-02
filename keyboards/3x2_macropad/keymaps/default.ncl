@@ -1,4 +1,4 @@
-let { tap, hold, td, combo, .. } = import "fak/keycode.ncl" in
+let { tap, hold, td, combo, encoder, .. } = import "fak/keycode.ncl" in
 
 # We alias commonly used stuff, so we don't end up repeating them over and over.
 let kc = tap.reg.kc in
@@ -46,6 +46,9 @@ in
 # Keymap definition
 {
   virtual_keys = [
+    # Encoder
+    encoder.ccw 0,
+    encoder.cw 0,
     # Combo activated by the first and second physical keys
     combo.make 42 [0, 1],
   ],
@@ -56,22 +59,28 @@ in
       me.VOLU, me.VOLD, me.MUTE,
 
       # Combos start here in the same order we defined them above
+      me.VOLD,
+      me.VOLU,
       hold.reg.layer 1
     ],
     [ # Layer 1
       kc.A,    kc.B,    kc.C,
       kc.D,    kc.E,    kc.F,
 
+      me.VOLD,
+      me.VOLU,
       TTTT,
     ],
   ],
 
   leds = 
-    let red = "0xFF0000" in 
+    let c = { red = 0xAA0000, blue = 0x0000AA } in 
     [
       [ # Layer 0
-        red, red, red,
-        red, red, red
-      ]
+        c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red
+      ],
+      [ # Layer 1
+        c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue
+      ],
     ],
 }
