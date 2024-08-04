@@ -9,7 +9,7 @@ let { WS2812B, .. } = import "lib/leds.ncl" in
     product_ver = 256,  # 0x0100
   },
   encoders = [
-    PhysicalEncoder 15 14 6,
+    PhysicalEncoder 15 14 4,
   ],
   keys =
     let D = DirectPinKey in

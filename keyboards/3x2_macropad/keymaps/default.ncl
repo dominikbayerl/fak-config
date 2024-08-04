@@ -1,4 +1,5 @@
 let { tap, hold, td, combo, encoder, .. } = import "fak/keycode.ncl" in
+let { Rainbow, .. } = import "lib/leds.ncl" in
 
 # We alias commonly used stuff, so we don't end up repeating them over and over.
 let kc = tap.reg.kc in
@@ -13,6 +14,7 @@ let cu = {
   PSTE = tap.reg.mod.lctl & kc.V,
   CUT =  tap.reg.mod.lctl & kc.X,
   CLOS = tap.reg.mod.lalt & kc.F4,
+  BOOT = tap.custom.fak.BOOT,
 
   # Yep. Such names are possible in Nickel.
   ":P" = tap.reg.mod.lctl & tap.reg.mod.lalt & kc.DEL,
@@ -49,38 +51,37 @@ in
     # Encoder
     encoder.ccw 0,
     encoder.cw 0,
-    # Combo activated by the first and second physical keys
-    combo.make 42 [0, 1],
+
+    # Combo activated by the third, fourth, and fifth physical keys
+    combo.make 100 [3, 4, 5],
   ],
 
   layers = [
     [ # Layer 0
       cu.COPY, cu.PSTE, cu.CUT,
-      me.VOLU, me.VOLD, me.MUTE,
-
+      me.VOLU, me.VOLD, me.MUTE & hold.reg.layer 1 & hold.reg.behavior {},
+      
       # Combos start here in the same order we defined them above
       me.VOLD,
       me.VOLU,
-      hold.reg.layer 1
+      cu.BOOT,
     ],
     [ # Layer 1
       kc.A,    kc.B,    kc.C,
-      kc.D,    kc.E,    kc.F,
+      kc.D,    kc.E,    XXXX,
 
       me.VOLD,
       me.VOLU,
-      TTTT,
+      XXXX,
     ],
   ],
 
   leds = 
-    let c = { red = 0xAA0000, blue = 0x0000AA } in 
+    let c = { red = 0xAA0000, blue = 0x0000AA, black = 0x000000, grey = 0x111111 } in 
     [
-      [ # Layer 0
-        c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red, c.red
-      ],
-      [ # Layer 1
-        c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue, c.blue
-      ],
+      # Layer 0
+      [ c.red, c.red, c.red, c.red, c.red, c.red ] @ (Rainbow 12 1.0 0.2),
+      # Layer 1
+      [ c.blue, c.blue, c.blue, c.blue, c.blue, c.blue ] @ (std.array.generate (fun _ => c.grey) 12),
     ],
 }
